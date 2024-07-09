@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        .section input, .section button {
+            margin: 5px 0;
+            padding: 10px;
+            width: calc(100% - 22px);
+            box-sizing: border-box;
+        }
+        .section button {
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .section button:hover {
+            background-color: #555;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ccc;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Books API</h1>
+
+    <div class="section">
+        <h2>Get All Books</h2>
+        <button onclick="getAllBooks()">Get All Books</button>
+        <ul id="booksList"></ul>
+    </div>
+
+    <div class="section">
+        <h2>Get Book by ID</h2>
+        <input type="number" id="getBookId" placeholder="Book ID">
+        <button onclick="getBookById()">Get Book</button>
+        <pre id="bookDetails"></pre>
+    </div>
+
+    <div class="section">
+        <h2>Add Digital Book</h2>
+        <input type="text" id="addBookTitle" placeholder="Title">
+        <input type="text" id="addBookAuthor" placeholder="Author">
+        <input type="number" id="addBookYear" placeholder="Publication Year">
+        <button onclick="addDigitalBook()">Add Book</button>
+    </div>
+
+    <div class="section">
+        <h2>Update Digital Book</h2>
+        <input type="number" id="updateBookId" placeholder="ID">
+        <input type="text" id="updateBookTitle" placeholder="Title">
+        <input type="text" id="updateBookAuthor" placeholder="Author">
+        <input type="number" id="updateBookYear" placeholder="Publication Year">
+        <button onclick="updateDigitalBook()">Update Book</button>
+    </div>
+
+    <div class="section">
+        <h2>Delete Digital Book</h2>
+        <input type="number" id="deleteBookId" placeholder="Book ID">
+        <button onclick="deleteDigitalBook()">Delete Book</button>
+    </div>
+</div>
+
+<script>
+    const apiUrl = 'http://localhost:5192/api/Books';
+
+    function getAllBooks() {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(books => {
+                const booksList = document.getElementById('booksList');
+                booksList.innerHTML = '';
+                books.forEach(book => {
+                    const li = document.createElement('li');
+                    li.textContent = `${book.id}: ${book.title} by ${book.author} (${book.publicationYear})`;
+                    booksList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function getBookById() {
+        const bookId = document.getElementById('getBookId').value;
+        fetch(`${apiUrl}/${bookId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Book not found');
+                }
+                return response.json();
+            })
+            .then(book => {
+                document.getElementById('bookDetails').textContent = JSON.stringify(book, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('bookDetails').textContent = error;
+            });
+    }
+
+    function addDigitalBook() {
+        const book = {
+            title: document.getElementById('addBookTitle').value,
+            author: document.getElementById('addBookAuthor').value,
+            publicationYear: document.getElementById('addBookYear').value
+        };
+        fetch(`${apiUrl}/digital`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('Book added successfully');
+                console.log('Success:', data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateDigitalBook() {
+        const bookId = document.getElementById('updateBookId').value;
+        const book = {
+            id: bookId,
+            title: document.getElementById('updateBookTitle').value,
+            author: document.getElementById('updateBookAuthor').value,
+            publicationYear: document.getElementById('updateBookYear').value
+        };
+        fetch(`${apiUrl}/digital/${bookId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(book)
+        })
+            .then(() => {
+                alert('Book updated successfully');
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function deleteDigitalBook() {
+        const bookId = document.getElementById('deleteBookId').value;
+        fetch(`${apiUrl}/digital/${bookId}`, {
+            method: 'DELETE'
+        })
+            .then(() => {
+                alert('Book deleted successfully');
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>

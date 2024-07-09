@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "GfjDp/s6CZ6pOy4mYEEqpUtDZrtAR6+9xA5V3hzd6hY=",
+  "Source": "ApiBooks",
+  "BasePath": "_content/ApiBooks",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ApiBooks/wwwroot",
+      "Source": "ApiBooks",
+      "ContentRoot": "/Users/almeidadeveloper/Projects/test-tech/csharp/ApiBooks/wwwroot/",
+      "BasePath": "_content/ApiBooks",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/almeidadeveloper/Projects/test-tech/csharp/ApiBooks/wwwroot/index.html",
+      "SourceId": "ApiBooks",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/almeidadeveloper/Projects/test-tech/csharp/ApiBooks/wwwroot/",
+      "BasePath": "_content/ApiBooks",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/index.html"
+    }
+  ]
+}
